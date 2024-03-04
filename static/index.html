@@ -12,7 +12,7 @@
   <div class="splashHeader">
     <div class="loginHeader">
       <div class="loggedOut"> <!-- TODO: Show me only to logged-out users -->
-        <a>Login</a>
+        <a onclick="LoadURL('login')">Login</a> 
       </div>
       <div class="loggedIn"> <!-- TODO: Show me only to logged-in users -->
         <a class="welcomeBack">
@@ -28,16 +28,16 @@
       <img id="tv" src="/static/tv.jpeg">
       <img id="popcorn" src="/static/popcorn.png">
     </div>
-    <h1>Watch Party</h1>
-    <h2>2</h2>
-    <button class="create">Create a Room</button> <!-- TODO: Show me only to logged-in users -->
-    <button class="signup">Signup</button> <!-- TODO: Show me only to logged-out users -->
+    <h1  onclick="LoadURL('')" style="cursor: pointer;">Watch Party</h1>
+    <h2 onclick="LoadURL('')">2</h2>
+    <button class="create"  onclick="createNewRoom()">Create a Room</button> <!-- TODO: Show me only to logged-in users -->
+    <button class="signup" onclick="signUP()">Signup</button> <!-- TODO: Show me only to logged-out users -->
   </div>
 
   <h2>Rooms</h2>
   <div class="rooms">
     <div class="roomList">
-      <a>{{room.id}}: <strong>{{room.name}}</strong></a>
+      <!-- <a>{{room.id}}: <strong>{{room.name}}</strong></a> -->
     </div>
     <div class="noRooms">No rooms yet! You get to be first!</div> <!-- TODO: Show me only if roomList is empty -->
   </div>
@@ -45,8 +45,8 @@
 
 <div class="profile"> <!-- TODO: Show me only on "/profile" -->
   <div class="header">
-    <h2><a>Watch Party</a></h2>
-    <h4>2</h4>
+    <h2 onclick="LoadURL('')" style="cursor: pointer;"><a>Watch Party</a></h2>
+    <h4  onclick="LoadURL('')">2</h4>
     <div class="loginHeader">
       <div class="loggedIn">
         <a class="welcomeBack">
@@ -61,16 +61,16 @@
       <h2>Welcome to Watch Party!</h2>
       <div class="alignedForm">
         <label for="username">Username: </label>
-        <input name="username" value="{{ username }}">
-        <button>update</button>
+        <input name="username" value="">
+        <button  onclick="updateUsername()">update</button>
         <label for="password">Password: </label>
         <input type="password" name="password" value="{{ password }}">
-        <button>update</button>
+        <button onclick="updatePassword()">update</button>
         <label for="repeatPassword">Repeat: </label>
         <input type="password" name="repeatPassword" value="{{ password }}">
         <error>Passwords don't match</error>
-        <button class="exit goToSplash">Cool, let's go!</button>
-        <button class="exit logout">Log out</button>
+        <button class="exit goToSplash" onclick="LoadURL('')">Cool, let's go!</button>
+        <button class="exit logout" onclick="logoutUser()">Log out</button>
       </div>
     </div>
   </div> 
@@ -78,24 +78,24 @@
 
 <div class="login"> <!-- TODO: Show me only on "/login" -->
   <div class="header">
-    <h2><a>Watch Party</a></h2>
-    <h4>2</h4>
+    <h2 onclick="LoadURL('')" style="cursor: pointer;"><a>Watch Party</a></h2>
+    <h4 onclick="LoadURL('')">2</h4>
   </div>
   <div class="clip">
     <div class="auth container">
       <h3>Enter your username and password to log in:</h3>
       <div class="alignedForm login">
         <label for="username">Username</label>
-        <input name="username"></input>
-        <button>Login</button>
+        <input name="username" id="username"></input>
+        <button onclick="loginUser()">Login</button>
         <label for="password">Password</label>
-        <input type="password" name="password">
+        <input type="password" name="password" id="password">
       </div>
       <div class="failed"> <!-- TODO: Hide me by default. Show only on failed login attempts -->
         <div class="message">
           Oops, that username and password don't match any of our users!
         </div>
-        <button>Create a new Account</button>
+        <button onclick="signUpUserWithDetails()">Create a new Account</button>
       </div>
     </div>
   </div>
@@ -103,28 +103,28 @@
 
 <div class="room"> <!-- TODO: Show me only on "/room" (and its subroutes) -->
   <div class="header">
-    <h2><a>Watch Party</a></h2>
-    <h4>2</h4>
+    <h2><a onclick="LoadURL('')" style="cursor: pointer;">Watch Party</a></h2>
+    <h4 onclick="LoadURL('')">2</h4>
     <div class="roomDetail">
       <div class="displayRoomName"> <!-- TODO: Show me by default. Hide when user clicks the edit icon below -->
         <h3>
-          Chatting in <strong>{{ room.name }}</strong>
-          <a><span class="material-symbols-outlined md-18">edit</span></a>
+          Chatting in <strong id="roomName">{{ room.name }}</strong>
+          <a onclick="toggleEditMode()"><span class="material-symbols-outlined md-18" style="cursor: pointer;">edit</span></a>
         </h3>
       </div>
-      <div class="editRoomName"> <!-- TODO: Hide me by default. Show when user clicks the edit icon above -->
+      <div class="editRoomName hide"> <!-- TODO: Hide me by default. Show when user clicks the edit icon above -->
         <h3>
-          Chatting in <input>
-          <button>Update</button>
+          Chatting in <input id="roomNameInput" value="{{ room['name'] }}">
+          <button onclick="saveRoomName()" style="cursor: pointer;">Update</button>
         </h3>
       </div>
       Invite users to this chat at:
-      <a>/rooms/{{ room_id }}</a>
+      <a onclick="router()" style="text-decoration: underline; cursor: pointer;" id="roomId">/rooms/{{ room_id }}</a>
     </div>
     <div class="loginHeader">
       <div class="loggedIn">
         <a class="welcomeBack">
-          <span class="username">{{ Username }}</span>
+          <span class="username"></span>
           <span class="material-symbols-outlined md-18">person</span></a>
         </a>
       </div>
@@ -136,34 +136,10 @@
       <div class="chat">
         <div class="comment_box">
           <label for="comment">What do you have to say?</label>
-          <textarea name="comment"></textarea>
-          <button type="submit" value="Post">Post</button>
+          <textarea name="comment" id="commentTA"></textarea>
+          <button type="submit" value="Post" onclick="postMessage(document.getElementById('commentTA').value)">Post</button>
         </div>
         <div class="messages"> <!-- TODO: Replace with the content returned by the API -->
-          <message>
-            <author>Mr Chatterworth</author>
-            <content>Good evening! And how is everyone feeling?</content>
-          </message>
-          <message>
-            <author>big chats</author>
-            <content>gr8 lol</content>
-          </message>
-          <message>
-            <author>Mr Chatterworth</author>
-            <content>Splendid!</content>
-          </message>
-          <message>
-            <author>Chatty Cat</author>
-            <content>
-              Meow meow meow meow meow meow meow meow meow meow meow 
-              meow meow meow meow meow meow meow meow meow meow meow 
-              meow meow meow meow meow meow meow meow meow meow meow 
-            </content>
-          </message>
-          <message>
-            <author>Mr Chatterworth</author>
-            <content>Indeed, M. Cat. Indeed. 🧐</content>
-          </message>
         </div>
       </div>
       <div class="noMessages">
@@ -174,5 +150,6 @@
   </div> <!-- end .clip -->
 </div> <!-- end .room -->
 <script src="/static/script.js"> </script>
+<script> startMessagePolling(); </script>
 </body>
 </html>
